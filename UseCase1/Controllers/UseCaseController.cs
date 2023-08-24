@@ -16,8 +16,17 @@ namespace UseCase1.Controllers
 
         [HttpGet]
         [ActionName("GetCountries")]
-        public async Task<ActionResult> GetCountries(string? countryName = null, int? population = null, string? a3 = null, string? a4 = null)
+        public async Task<ActionResult> GetCountries(string? countryName = null, int? population = null, string? sortDirection = "asc", string? a4 = null)
         {
+            if (countryName is not null)
+            {
+                if (sortDirection is not null)
+                {
+                    return Ok(await _dataLoaderService.GetCountriesByName(countryName, sortDirection));
+                }
+
+                return Ok(await _dataLoaderService.GetCountriesByName(countryName));
+            }
             if (population is not null)
             {
                 return Ok(await _dataLoaderService.GetCountriesByPopulation(population.Value));

@@ -54,6 +54,12 @@
             Continents = new List<string>();
             Flags = new Dictionary<string, string>();
             CoatOfArms = new Dictionary<string, string>();
+            Name = new CountryName();
+            Idd = new InternationalCallingCodes();
+            Gini = new Gini();
+            Car = new CarSign();
+            CapitalInfo = new CapitalInfo();
+            PostalCode = new PostalCode();
         }
     }
 }

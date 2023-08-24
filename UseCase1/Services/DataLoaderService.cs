@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Xml.Linq;
 using UseCase1.Models;
 
 namespace UseCase1.Services
@@ -26,6 +25,16 @@ namespace UseCase1.Services
             return all.Where(x => !string.IsNullOrEmpty(x.Name.Common) && x.Name.Common.Contains(name, StringComparison.InvariantCultureIgnoreCase));
         }
 
+        public async Task<IEnumerable<Country>> GetCountriesByName(string name, string sortDirection)
+        {
+            var countries = await GetCountriesByName(name);
+            if (sortDirection.Equals("asc", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return countries.OrderBy(x => x.Name.Common);
+            }
+            return countries.OrderByDescending(x => x.Name.Common);
+        }
+
         public async Task<IEnumerable<Country>> GetCountriesByPopulation(int millions)
         {
             var all = await GetAll();
@@ -39,7 +48,7 @@ namespace UseCase1.Services
             {
                 using HttpClient httpClient = _httpClientFactory.CreateClient();
                 var countries = await httpClient.GetFromJsonAsync<IEnumerable<Country>>(COUNTRIES_URL);
-                return countries;
+                return countries ?? new List<Country>();
             }
             catch (Exception e)
             {
