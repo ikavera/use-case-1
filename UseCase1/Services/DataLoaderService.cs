@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Xml.Linq;
 using UseCase1.Models;
 
 namespace UseCase1.Services
@@ -6,6 +7,7 @@ namespace UseCase1.Services
     public class DataLoaderService : IDataLoaderService
     {
         private const string COUNTRIES_URL = "https://restcountries.com/v3.1/all";
+        private const int MILLION = 1_000_000;
         private readonly IHttpClientFactory _httpClientFactory;
 
         public DataLoaderService(IHttpClientFactory httpClientFactory)
@@ -22,6 +24,12 @@ namespace UseCase1.Services
         {
             var all = await GetAll();
             return all.Where(x => !string.IsNullOrEmpty(x.Name.Common) && x.Name.Common.Contains(name, StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        public async Task<IEnumerable<Country>> GetCountriesByPopulation(int millions)
+        {
+            var all = await GetAll();
+            return all.Where(x => x.Population <= millions * MILLION);
         }
 
         #region Helpers
