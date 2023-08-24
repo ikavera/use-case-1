@@ -7,18 +7,18 @@ namespace UseCase1.Controllers
     [Route("[controller]/[action]")]
     public class UseCaseController : ControllerBase
     {
-        private readonly IDataLoaderService _dataLoaderService;
+        private readonly IOperationsService _operationsService;
 
-        public UseCaseController(IDataLoaderService dataLoaderService)
+        public UseCaseController(IOperationsService operationsService)
         {
-            _dataLoaderService = dataLoaderService;
+            _operationsService = operationsService;
         }
 
         [HttpGet]
         [ActionName("GetCountries")]
         public async Task<ActionResult> GetCountries(string? countryName = null, int? population = null, string? sortDirection = "asc", int? records = null, int? pageNumber = null)
         {
-            return Ok(await _dataLoaderService.GetCountries(countryName, population, sortDirection!, records, pageNumber));
+            return Ok(await _operationsService.GetCountries(countryName, population, sortDirection!, records, pageNumber));
         }
     }
 }

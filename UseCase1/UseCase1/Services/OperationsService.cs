@@ -1,27 +1,20 @@
-﻿using System.Diagnostics;
-using UseCase1.Models;
+﻿using UseCase1.Models;
 
 namespace UseCase1.Services
 {
-    public class DataLoaderService : IDataLoaderService
+    public class OperationsService : IOperationsService
     {
-        private const string COUNTRIES_URL = "https://restcountries.com/v3.1/all";
         private const int MILLION = 1_000_000;
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IDataLoaderService _dataLoaderService;
 
-        public DataLoaderService(IHttpClientFactory httpClientFactory)
+        public OperationsService(IDataLoaderService dataLoaderService)
         {
-            _httpClientFactory = httpClientFactory;
-        }
-
-        public async Task<IEnumerable<Country>> GetAllCountries()
-        {
-            return await GetAll();
+            _dataLoaderService = dataLoaderService;
         }
 
         public async Task<IEnumerable<Country>> GetCountries(string? name, int? millions, string sortDirection, int? recordsPerPage, int? pageNumber)
         {
-            var all = await GetAll();
+            var all = await _dataLoaderService.GetAllCountries();
             if (name is not null) all = FilterByName(all, name);
             if (millions is not null) all = FilterByPopulation(all, millions.Value);
             all = GetSorted(all, sortDirection);
@@ -30,13 +23,13 @@ namespace UseCase1.Services
 
         public async Task<IEnumerable<Country>> GetAllCountriesPaged(int? recordsPerPage, int? pageNumber)
         {
-            var all = await GetAll();
+            var all = await _dataLoaderService.GetAllCountries();
             return GetPaginated(all, recordsPerPage, pageNumber);
         }
 
         public async Task<IEnumerable<Country>> GetCountriesByName(string name)
         {
-            var all = await GetAll();
+            var all = await _dataLoaderService.GetAllCountries();
             return FilterByName(all, name);
         }
 
@@ -48,26 +41,11 @@ namespace UseCase1.Services
 
         public async Task<IEnumerable<Country>> GetCountriesByPopulation(int millions)
         {
-            var all = await GetAll();
+            var all = await _dataLoaderService.GetAllCountries();
             return FilterByPopulation(all, millions);
         }
 
         #region Helpers
-        private async Task<IEnumerable<Country>> GetAll()
-        {
-            try
-            {
-                using HttpClient httpClient = _httpClientFactory.CreateClient();
-                var countries = await httpClient.GetFromJsonAsync<IEnumerable<Country>>(COUNTRIES_URL);
-                return countries ?? new List<Country>();
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e);
-                throw;
-            }
-        }
-
         private IEnumerable<Country> FilterByPopulation(IEnumerable<Country> countries, int millions)
         {
             return countries.Where(x => x.Population <= millions * MILLION);

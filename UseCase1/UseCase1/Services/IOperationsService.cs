@@ -2,9 +2,8 @@
 
 namespace UseCase1.Services
 {
-    public interface IDataLoaderService
+    public interface IOperationsService
     {
-        Task<IEnumerable<Country>> GetAllCountries();
         Task<IEnumerable<Country>> GetAllCountriesPaged(int? recordsPerPage, int? pageNumber);
         Task<IEnumerable<Country>> GetCountriesByName(string name);
         Task<IEnumerable<Country>> GetCountriesByName(string name, string sortDirection);
