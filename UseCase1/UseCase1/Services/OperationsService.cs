@@ -46,25 +46,25 @@ namespace UseCase1.Services
         }
 
         #region Helpers
-        private IEnumerable<Country> FilterByPopulation(IEnumerable<Country> countries, int millions)
+        private static IEnumerable<Country> FilterByPopulation(IEnumerable<Country> countries, int millions)
         {
             return countries.Where(x => x.Population <= millions * MILLION);
         }
 
-        private IEnumerable<Country> FilterByName(IEnumerable<Country> countries, string name)
+        private static IEnumerable<Country> FilterByName(IEnumerable<Country> countries, string name)
         {
             return countries.Where(x => !string.IsNullOrEmpty(x.Name.Common)
             && x.Name.Common.Contains(name, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        private IEnumerable<Country> GetPaginated(IEnumerable<Country> countries, int? recordsPerPage, int? pageNumber)
+        private static IEnumerable<Country> GetPaginated(IEnumerable<Country> countries, int? recordsPerPage, int? pageNumber)
         {
             recordsPerPage ??= countries.Count();
             pageNumber ??= 0;
             return countries.Skip(pageNumber.Value * recordsPerPage.Value).Take(recordsPerPage.Value);
         }
 
-        private IEnumerable<Country> GetSorted(IEnumerable<Country> countries, string sortDirection)
+        private static IEnumerable<Country> GetSorted(IEnumerable<Country> countries, string sortDirection)
         {
             if (sortDirection.Equals("asc", StringComparison.InvariantCultureIgnoreCase))
             {
