@@ -9,5 +9,6 @@ namespace UseCase1.Services
         Task<IEnumerable<Country>> GetCountriesByName(string name);
         Task<IEnumerable<Country>> GetCountriesByName(string name, string sortDirection);
         Task<IEnumerable<Country>> GetCountriesByPopulation(int millions);
+        Task<IEnumerable<Country>> GetCountries(string? name, int? millions, string sortDirection, int? recordsPerPage, int? pageNumber);
     }
 }
