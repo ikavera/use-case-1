@@ -16,7 +16,7 @@ namespace UseCase1.Controllers
 
         [HttpGet]
         [ActionName("GetCountries")]
-        public async Task<ActionResult> GetCountries(string countryName = null, int? a2 = null, string a3 = null, string a4 = null)
+        public async Task<ActionResult> GetCountries(string? countryName = null, int? a2 = null, string? a3 = null, string? a4 = null)
         {
             if (countryName == null)
             {

@@ -2,7 +2,7 @@
 {
     public class InternationalCallingCodes
     {
-        public string Root { get; set; }
+        public string? Root { get; set; }
         public List<string> Suffixes { get; set; }
         public InternationalCallingCodes()
         {

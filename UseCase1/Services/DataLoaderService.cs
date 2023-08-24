@@ -21,7 +21,7 @@ namespace UseCase1.Services
         public async Task<IEnumerable<Country>> GetCountriesByName(string name)
         {
             var all = await GetAll();
-            return all.Where(x => x.Name.Common.Contains(name, StringComparison.InvariantCultureIgnoreCase));
+            return all.Where(x => !string.IsNullOrEmpty(x.Name.Common) && x.Name.Common.Contains(name, StringComparison.InvariantCultureIgnoreCase));
         }
 
         #region Helpers
