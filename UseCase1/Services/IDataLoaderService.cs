@@ -5,5 +5,6 @@ namespace UseCase1.Services
     public interface IDataLoaderService
     {
         Task<IEnumerable<Country>> GetAllCountries();
+        Task<IEnumerable<Country>> GetCountriesByName(string name);
     }
 }
