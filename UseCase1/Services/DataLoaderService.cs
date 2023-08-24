@@ -19,6 +19,14 @@ namespace UseCase1.Services
             return await GetAll();
         }
 
+        public async Task<IEnumerable<Country>> GetAllCountriesPaged(int? recordsPerPage, int? pageNumber)
+        {
+            var all = await GetAll();
+            recordsPerPage ??= all.Count();
+            pageNumber ??= 0;
+            return all.Skip(pageNumber.Value * recordsPerPage.Value).Take(recordsPerPage.Value).ToList();
+        }
+
         public async Task<IEnumerable<Country>> GetCountriesByName(string name)
         {
             var all = await GetAll();
